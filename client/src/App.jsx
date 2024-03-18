@@ -6,9 +6,11 @@ import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
+import Navbar from "./components/Navbar";
 function App() {
   return (
     <BrowserRouter>
+    <Navbar />
       <Routes>
         <Route>
           <Route path="/" element={<Home />} />
