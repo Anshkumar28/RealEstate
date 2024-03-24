@@ -1,5 +1,6 @@
  import UserModel from "../models/user.models.js";
  import bcryptjs from "bcryptjs";
+ import jwt from "jsonwebtoken";
 import { errHandler } from "../utils/err.js";
  export const  signup= async(req,res,next)=>{
  //   console.log(req.body);
@@ -14,4 +15,19 @@ import { errHandler } from "../utils/err.js";
 
 next(errHandler(550,'error from function'));
  }
+};
+export const signin=async(req,res,next)=>{
+   const {email,password} = await req.body;
+   try{
+      const validUser=await UserModel.findOne({email})
+      if(!validUser) return next(errHandler(404,'User does not exists'));
+      const validPassword=bcryptjs.compareSync(password,validUser.password);
+   if (!validPassword )return next(errHandler(401,"Wrong credentials"));
+   const token=jwt.sign({id:validUser._id},process.env.JWT_SECRET)
+   const {password:pass,...rest}=validUser._doc;
+   res.cookie('access_token',token,{httpOnly:true}).status(200).json(rest)
+   }
+   catch(error){
+next(error)
+   }
 }
