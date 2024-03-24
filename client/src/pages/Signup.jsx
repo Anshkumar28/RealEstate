@@ -8,7 +8,7 @@ function Signup() {
   const [error, setError] = useState(null);
   const [disable, setDisable] = useState(true);
   const [msg, setMsg] = useState(null); // Updated state for messages
-
+const navigate = useNavigate();
   useEffect(() => {
     setDisable(!isFormValid()); // Toggle disable state based on form validity
   }, [formdata]);
@@ -60,6 +60,7 @@ function Signup() {
       }
       setLoading(false);
       setError(false);
+      navigate('/sign-in')
     } catch (error) {
       setLoading(false);
       setError(error.message);
